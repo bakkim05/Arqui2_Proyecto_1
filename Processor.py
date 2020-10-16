@@ -1,5 +1,6 @@
 import time
 import random
+from numpy import random
 
 class Processor:
     def __init__(self, timer,policy):
@@ -11,8 +12,21 @@ class Processor:
 
     #Create Instruction
     def instruction(self):
-        
+        #1-Read, 2-Write, 3-Calc
+        instruction = random.binomial(n=3, p=0.5, size=1)
+        if (instruction == 1):
+            memoryPos = random.randint(0,3)
+            print ("READ "+ self.decimal_to_binary(memoryPos))
+            self.readCache(memoryPos)
+        elif (instruction == 2):
+            memoryPos = random.randint(0,7)
+            writeValue = random.randint(0,65534)
+            print("WRITE "+self.decimal_to_hexadecimal(writeValue))
+            self.writeCache(writeValue)
+        else:
+            self.sleep()
 
+                    
     #Cache Write
     def writeCache(self, value):
         self.isCacheFull()
@@ -74,8 +88,8 @@ class Processor:
         return
 
     #Descanso
-    def sleep(self, timer):
-        time.sleep(timer)
+    def sleep(self):
+        time.sleep(self.timer)
         return
 
     #Funciones Auxliares para numeros hex, bin y dec
