@@ -94,14 +94,7 @@ class Processor:
 
     #Funciones Auxliares para numeros hex, bin y dec
     def binary_to_decimal(self, binary):
-        decimal = 0
-        binary = list(str(binary))
-        binary = binary[::-1]
-        power = 0
-        for number in binary:
-            if number == '1':
-                decimal += 2**power
-            power += 1
+        decimal = int(binary,2)
         return decimal
 
     def decimal_to_binary(self, decimal):
