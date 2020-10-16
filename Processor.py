@@ -8,7 +8,13 @@ class Processor:
         self.policy = policy
         self.isFull = False
 
-    def insertCache(self, value):
+
+    #Create Instruction
+    def instruction(self):
+        
+
+    #Cache Write
+    def writeCache(self, value):
         self.isCacheFull()
         if (self.isFull):
             if self.policy == "fifo":
@@ -30,6 +36,11 @@ class Processor:
                     return
         return
 
+    #Cache Read
+    def readCache(self, position):
+        return self.cache[position]
+
+    #Cache Management
     def cacheFlush(self):
         self.cache = [0,0,0,0]
         return
@@ -45,9 +56,9 @@ class Processor:
             self.isFull = True
         else:
             self.isFull = False
-    
         return
 
+    #Politicas de Reemplazo
     def fifoPolicy(self, value):
         self.cache.pop()
         self.cache.insert(0,value)
@@ -62,8 +73,31 @@ class Processor:
         self.cache[random.randint(0,3)] = value
         return
 
+    #Descanso
     def sleep(self, timer):
         time.sleep(timer)
         return
 
-    
+    #Funciones Auxliares para numeros hex, bin y dec
+    def binary_to_decimal(self, binary):
+        decimal = 0
+        binary = list(str(binary))
+        binary = binary[::-1]
+        power = 0
+        for number in binary:
+            if number == '1':
+                decimal += 2**power
+            power += 1
+        return decimal
+
+    def decimal_to_binary(self, decimal):
+        binary = bin(decimal).replace('0b','')
+        return binary
+
+    def hexadecimal_to_decimal(self, hexadecimal):
+        decimal = int(hexadecimal,16)
+        return decimal
+
+    def decimal_to_hexadecimal(self, decimal):
+        hexadecimal = hex(decimal).replace('0x','')
+        return hexadecimal
