@@ -1,10 +1,13 @@
 import time
 from Cache import Cache
+from Snoop import Snoop
 
 class Processor:
-    def __init__(self, timer):
+    def __init__(self, identifier, timer):
+        self.identifier = identifier
         self.timer = timer
         self.Cache = Cache()
+        self.Snoop = Snoop(self.identifier)
 
     def writeCache(self,direccionMemoria,valor):
         return self.Cache.write(direccionMemoria,valor)
