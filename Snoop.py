@@ -5,12 +5,12 @@ class Subscriber:
         self.memory = processor.memory
         self.identifier = processor.identifier
 
-    def update(self,senderId,message, direccionMemoria, valor):
-        moesi(self.processorList[senderId], self.processor, self.memory, message, direccionMemoria, valor)
+    def update(self,senderId,message, direccionMemoria):
+        self.moesi(self.processorList[senderId], self.processor, self.memory, message, direccionMemoria)
         return
 
-    def moesi(senderProcessor,processor, memory, message, direccionMemoria, valor):
-        if (mesasge == "read miss"):
+    def moesi(self, senderProcessor, processor, memory, message, direccionMemoria):
+        if (message == "read miss"):
             if(processor.estadoCacheGet(direccionMemoria) == "E"):
                 senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria,"S")
@@ -18,6 +18,10 @@ class Subscriber:
             elif(processor.estadoCacheGet(direccionMemoria) == "S"):
                 senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria,"S")
+            elif(processor.estadoCacheGet(direccionMemoria) == "M"):
+                senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
+                senderProcessor.estadoCacheSet(direccionMemoria, "S")
+                processor.estadoCacheSet(direccionMemoria,"O")
         elif (message == "write miss"):
             if(processor.estadoCacheGet(direccionMemoria) != "I"):
                 processor.estadoCacheSet(direccionMemoria,"I")
@@ -35,7 +39,7 @@ class Publisher:
     def register(self,subscriberName):
         self.subscriber.append(subscriberName)
     
-    def broadcast(self, senderId, message, direccionMemoria, valor):
+    def broadcast(self, senderId, message, direccionMemoria):
         for subscriber in self.subscriber:
-            subscriber.update(senderId,message)
+            subscriber.update(senderId,message,direccionMemoria)
 

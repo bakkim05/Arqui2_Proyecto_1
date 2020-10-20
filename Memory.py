@@ -18,3 +18,6 @@ class Memory:
     def sleep(self):
         time.sleep(self.timer)
         return
+    
+    def printMemory(self):
+        return self.mem

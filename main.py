@@ -29,8 +29,9 @@ def processorToSubscriber(processor, subscribers):
     return
 
 def publisherToProcessor(processor, publisher):
+
     for i in range(4):
-        processor[i].publisher = publisher[i]
+        processor[i].Publisher = publisher[i]
     return
 
 def generatorSingle(processor):
@@ -52,7 +53,7 @@ def generatorContinous():
         return
     return
 
-def generatorIteraciones(processor, iteraciones):
+def generatorIteraciones(processor, memory, iteraciones):
     for i in range(iteraciones):
         [numProcesador, instruccion, direccionMemoria, valor] = generatorInstruction()
         p = processor[numProcesador]
@@ -63,6 +64,8 @@ def generatorIteraciones(processor, iteraciones):
             print("P"+str(numProcesador)+": READ " + direccionMemoria)
         else:
             print("P"+str(numProcesador)+": WRITE " + direccionMemoria+';'+valor)
+        p.instruction(instruccion, direccionMemoria, valor)
+        printMemoryAndCache(processor,memory)
     return
 
 def generatorInstruction():
@@ -73,6 +76,15 @@ def generatorInstruction():
     
     return [numProcesador,instruccion,direccionMemoria,valor]
 
+
+def printMemoryAndCache(processor,memory):
+    for i in range(4):
+        print('------------------P'+str(i)+'------------------')
+        print(processor[i].printCacheValue())
+        print(processor[i].printCacheEstado())
+        print(processor[i].printCacheDireccion())
+        print('--------------------------------------')
+    print(memory.printMemory())
 
 if __name__ == "__main__":
 
@@ -91,7 +103,9 @@ if __name__ == "__main__":
     subscribeToPublisher(publisher,subscriber)
 
     #Add processors to the Subscriber
-    processorToSubscriber(processor,publisher)
+    processorToSubscriber(processor,subscriber)
 
+    #Add publishers to processors
+    publisherToProcessor(processor,publisher)
 
-    generatorIteraciones(processor,100)
+    generatorIteraciones(processor, memory, 2)

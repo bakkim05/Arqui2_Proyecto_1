@@ -1,7 +1,7 @@
 class BloqueCache:
     def __init__(self, identifier):
         self.identifier = identifier
-        self.estado = 'I'  #M=0, O=1, E=2, S=3, I=4
+        self.estado = 'I'
         self.direccion = ''
         self.dato = ''
 

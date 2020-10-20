@@ -1,9 +1,10 @@
 from SetCache import SetCache
 
 class Cache:
-    def __init__(self):
-        self.set0 = SetCache()
-        self.set1 = SetCache()
+    def __init__(self, memory):
+        self.memory = memory
+        self.set0 = SetCache(self.memory)
+        self.set1 = SetCache(self.memory)
 
     def write(self, direccionMemoria, valor):
         if (direccionMemoria[-1] == '0'):
@@ -25,6 +26,24 @@ class Cache:
 
     def estadoSet(self, direccionMemoria, nuevoEstado):
         if (direccionMemoria[-1] == '0'):
-            return self.set0.s_estadoCache(direccionMemoria,nuevoEstado)
+            return self.set0.s_estadoSet(direccionMemoria,nuevoEstado)
         else:
-            return self.set1.s_estadoCache(direccionMemoria,nuevoEstado)
+            return self.set1.s_estadoSet(direccionMemoria,nuevoEstado)
+    
+    def printCacheValor(self):
+        temp = []
+        temp.append(self.set0.s_printCacheValor())
+        temp.append(self.set0.s_printCacheValor())
+        return temp
+
+    def printCacheEstado(self):
+        temp = []
+        temp.append(self.set0.s_printCacheEstado())
+        temp.append(self.set0.s_printCacheEstado())
+        return temp
+
+    def printCacheDireccion(self):
+        temp = []
+        temp.append(self.set0.s_printCacheDireccion())
+        temp.append(self.set0.s_printCacheDireccion())
+        return temp
