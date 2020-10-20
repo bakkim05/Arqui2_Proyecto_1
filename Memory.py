@@ -6,9 +6,11 @@ class Memory:
         self.timer = timer
 
     def memGet(self,position):
+        self.sleep()
         return self.mem[position]
 
     def memSet(self,position,value):
+        self.sleep()
         self.mem[position] = value
         return
 
