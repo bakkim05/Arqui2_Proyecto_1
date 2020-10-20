@@ -7,6 +7,16 @@ class Processor:
         self.timer = timer
         self.memory = memory
         self.Cache = Cache()
+        self.Publisher = None
+
+    def instruction(self, inst, direccionMemoria, valor):
+        if (inst == 1):
+            self.sleep()
+        elif (inst == 0):
+            self.readValidator(direccionMemoria)
+        else:
+            self.writeValidator(direccionMemoria,valor)
+        return
 
     def writeCache(self,direccionMemoria,valor):
         self.sleep()
@@ -16,6 +26,12 @@ class Processor:
     def readCache(self,direccionMemoria):
         self.sleep()
         return self.Cache.read(direccionMemoria)
+
+    def writeValidator(self, direccionMemoria, valor):
+        return
+
+    def readValidator(self, direccionMemoria):
+        return
         
     def estadoCache(self,direccionMemoria):
         return self.Cache.estadoGet(direccionMemoria)
