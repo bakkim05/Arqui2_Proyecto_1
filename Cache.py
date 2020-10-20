@@ -19,6 +19,12 @@ class Cache:
 
     def estadoGet(self, direccionMemoria):
         if (direccionMemoria[-1] == '0'):
-            return self.set0.s_estadoCache(direccionMemoria)
+            return self.set0.s_estadoGet(direccionMemoria)
         else:
-            return self.set1.s_estadoCache(direccionMemoria)
+            return self.set1.s_estadoGet(direccionMemoria)
+
+    def estadoSet(self, direccionMemoria, nuevoEstado):
+        if (direccionMemoria[-1] == '0'):
+            return self.set0.s_estadoCache(direccionMemoria,nuevoEstado)
+        else:
+            return self.set1.s_estadoCache(direccionMemoria,nuevoEstado)

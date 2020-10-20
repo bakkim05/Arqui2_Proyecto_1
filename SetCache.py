@@ -23,7 +23,7 @@ class SetCache:
         elif (direccionMemoria == self.bloque1.b_direccionGet()):
             return self.bloque1.b_datoGet()
         else:
-            return "Read Miss"
+            return
 
     def s_estadoGet(self,direccionMemoria):
         if (direccionMemoria == self.bloque0.b_direccionGet()):
@@ -32,3 +32,11 @@ class SetCache:
             return self.bloque1.b_estadoGet()
         else:
             return "I"
+    
+    def s_estadoSet(self,direccionMemoria, nuevoEstado):
+        if (direccionMemoria == self.bloque0.b_direccionGet()):
+            self.bloque0.b_estadoSet = nuevoEstado
+            return
+        elif (direccionMemoria == self.bloque1.b_direccionGet()):
+            self.bloque1.b_estadoSet = nuevoEstado
+            return
