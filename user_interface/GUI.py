@@ -1,4 +1,4 @@
-from tkinter import Tk, Label, Button, Entry, OptionMenu
+from tkinter import Tk, Label, Button, Entry, OptionMenu, StringVar
 
 
 class GUI:
@@ -43,22 +43,28 @@ class GUI:
 
         #opcion ingresatr instruccion
         self.iiLabel = Label(master,borderwidth = 2,relief="ridge", text="Ingresar Instruccion", width=self.width, height=self.height)
-        #dropdown menu
-        #dropdown menu
+        processorOption = ["Processor 0", "Processor 1", "Processor 2", "Processor 3"]
+        processorVar = StringVar(master)
+        processorVar.set(processorOption[0])
+        self.pOption = OptionMenu(master,processorVar,*processorOption)
+        instructionOption = ["READ", "CALC", "WRITE"]
+        instructionVar = StringVar(master)
+        instructionVar.set(instructionOption[0])
+        self.iOption = OptionMenu(master,instructionVar,*instructionOption)
         self.iiDireccion = Entry(master, width=self.width)
         self.iiValor = Entry(master, width=self.width)
         self.iiStart = Button(master, text="Start", width=self.width , height=self.height)
 
         self.iiLabel.grid(row=3, column=0)
-        #dropdown menu.grid(row=3, column=1)
-        #dropdown menu.grid(row=3, column=2)
+        self.pOption.grid(row=3, column=1)
+        self.iOption.grid(row=3, column=2)
         self.iiDireccion.grid(row=3, column=3)
         self.iiValor.grid(row=3, column=4)
         self.iiStart.grid(row=3, column=5)
 
         #Blank
-        self.blankLable = Label(master,text="",width=self.width, height=self.height)
-        self.blankLable.grid(row=4,column=0)
+        self.blankLabel1 = Label(master,text="",width=self.width, height=self.height)
+        self.blankLabel1.grid(row=4,column=0)
 
         #Processor 0
         self.p0Label = Label(master,borderwidth = 2,relief="ridge", text="Procesador 0", width=self.width, height=self.height)
@@ -117,6 +123,34 @@ class GUI:
         self.p3c2.grid(row=8,column=3)
         self.p3c3.grid(row=9,column=3)
 
+        #Blank
+        self.blankLabel2 = Label(master,text="",width=self.width, height=self.height)
+        self.blankLabel2.grid(row=10,column=0)
+
+        #Instruction Matrix
+        self.p0iLabel = Label(master, borderwidth = 2,relief="ridge",text="Procesador 0", width=self.width, height=self.height)
+        self.p1iLabel = Label(master, borderwidth = 2,relief="ridge",text="Procesador 1", width=self.width, height=self.height)
+        self.p2iLabel = Label(master, borderwidth = 2,relief="ridge",text="Procesador 2", width=self.width, height=self.height)
+        self.p3iLabel = Label(master, borderwidth = 2,relief="ridge",text="Procesador 3", width=self.width, height=self.height)
+
+        self.p0iLabel.grid(row=12,column=0)
+        self.p1iLabel.grid(row=13,column=0)
+        self.p2iLabel.grid(row=14,column=0)
+        self.p3iLabel.grid(row=15,column=0)
+
+        self.iLabel = Label(master, borderwidth = 2,relief="ridge",text="Instruccion Ejecutada", width=3*self.width, height=self.height)
+        self.p0inst = Label(master, borderwidth = 2,relief="ridge",text="", width=3*self.width, height=self.height)
+        self.p1inst = Label(master, borderwidth = 2,relief="ridge",text="", width=3*self.width, height=self.height)
+        self.p2inst = Label(master, borderwidth = 2,relief="ridge",text="", width=3*self.width, height=self.height)
+        self.p3inst = Label(master, borderwidth = 2,relief="ridge",text="", width=3*self.width, height=self.height)
+
+        self.iLabel.grid(row=11,column=1, columnspan = 3)
+        self.p0inst.grid(row=12,column=1, columnspan = 3)
+        self.p1inst.grid(row=13,column=1, columnspan = 3)
+        self.p2inst.grid(row=14,column=1, columnspan = 3)
+        self.p3inst.grid(row=15,column=1, columnspan = 3)
+
+
         #Memory
         self.mLabel = Label(master, borderwidth = 2,relief="ridge",text="Memoria", width=self.width, height=self.height)
         self.m0 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
@@ -137,22 +171,22 @@ class GUI:
         self.m15 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
 
         self.mLabel.grid(row=5, column=5)
-        self.m0.grid(row=5,column=5)
-        self.m1.grid(row=6,column=5)
-        self.m2.grid(row=7,column=5)
-        self.m3.grid(row=8,column=5)
-        self.m4.grid(row=9,column=5)
-        self.m5.grid(row=10,column=5)
-        self.m6.grid(row=11,column=5)
-        self.m7.grid(row=12,column=5)
-        self.m8.grid(row=13,column=5)
-        self.m9.grid(row=14,column=5)
-        self.m10.grid(row=15,column=5)
-        self.m11.grid(row=16,column=5)
-        self.m12.grid(row=17,column=5)
-        self.m13.grid(row=18,column=5)
-        self.m14.grid(row=19,column=5)
-        self.m15.grid(row=20,column=5)
+        self.m0.grid(row=6,column=5)
+        self.m1.grid(row=7,column=5)
+        self.m2.grid(row=8,column=5)
+        self.m3.grid(row=9,column=5)
+        self.m4.grid(row=10,column=5)
+        self.m5.grid(row=11,column=5)
+        self.m6.grid(row=12,column=5)
+        self.m7.grid(row=13,column=5)
+        self.m8.grid(row=14,column=5)
+        self.m9.grid(row=15,column=5)
+        self.m10.grid(row=16,column=5)
+        self.m11.grid(row=17,column=5)
+        self.m12.grid(row=18,column=5)
+        self.m13.grid(row=19,column=5)
+        self.m14.grid(row=20,column=5)
+        self.m15.grid(row=21,column=5)
         
 
 
