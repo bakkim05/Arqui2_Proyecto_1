@@ -108,5 +108,6 @@ if __name__ == "__main__":
     #Add publishers to processors
     publisherToProcessor(processor,publisher)
 
+
     generatorIteraciones(processor, memory, 100)
     # generatorSingle(processor)
