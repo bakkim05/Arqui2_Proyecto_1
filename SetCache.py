@@ -9,7 +9,7 @@ class SetCache:
 
     def s_write(self,direccionMemoria, valor):
         if (self.s_estadoGet(direccionMemoria) == "O" or self.s_estadoGet(direccionMemoria) == "M"):
-            self.s_writeToMem(direccionMemoria,self.s_read(direccionMemoria))
+            self.s_writeToMem(direccionMemoria,self.s_read(direccionMemoria),valor)
             if (self.lastUsed == 0):
                 self.bloque0.b_direccionSet(direccionMemoria)
                 self.bloque0.b_datoSet(valor)
