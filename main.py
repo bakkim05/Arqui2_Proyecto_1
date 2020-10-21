@@ -43,9 +43,10 @@ def generatorSingle(processor):
     elif (instruccion == 0):
         print("P"+str(numProcesador)+": READ " + direccionMemoria)
     else:
-        print("P"+str(numProcesador)+": Write " + direccionMemoria+';'+valor)
+        print("P"+str(numProcesador)+": WRITE " + direccionMemoria+';'+valor)
 
-    #p.instruccion(instruccion, direccionMemoria, valor)
+    p.instruction(instruccion, direccionMemoria, valor)
+    printMemoryAndCache(processor,memory)
     return
 
 def generatorContinous():
@@ -76,10 +77,9 @@ def generatorInstruction():
     
     return [numProcesador,instruccion,direccionMemoria,valor]
 
-
 def printMemoryAndCache(processor,memory):
     for i in range(4):
-        print('------------------P'+str(i)+'------------------')
+        print('------------------P'+str(i)+'-----------------')
         print(processor[i].printCacheValue())
         print(processor[i].printCacheEstado())
         print(processor[i].printCacheDireccion())
@@ -108,4 +108,5 @@ if __name__ == "__main__":
     #Add publishers to processors
     publisherToProcessor(processor,publisher)
 
-    generatorIteraciones(processor, memory, 2)
+    generatorIteraciones(processor, memory, 100)
+    # generatorSingle(processor)

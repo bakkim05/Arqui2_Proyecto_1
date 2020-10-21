@@ -2,8 +2,8 @@ class BloqueCache:
     def __init__(self, identifier):
         self.identifier = identifier
         self.estado = 'I'
-        self.direccion = ''
-        self.dato = ''
+        self.direccion = '0'
+        self.dato = '0'
 
     #Setter and Getters for Estado
     def b_estadoSet(self,nuevoEstado):

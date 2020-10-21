@@ -29,21 +29,3 @@ class Cache:
             return self.set0.s_estadoSet(direccionMemoria,nuevoEstado)
         else:
             return self.set1.s_estadoSet(direccionMemoria,nuevoEstado)
-    
-    def printCacheValor(self):
-        temp = []
-        temp.append(self.set0.s_printCacheValor())
-        temp.append(self.set0.s_printCacheValor())
-        return temp
-
-    def printCacheEstado(self):
-        temp = []
-        temp.append(self.set0.s_printCacheEstado())
-        temp.append(self.set0.s_printCacheEstado())
-        return temp
-
-    def printCacheDireccion(self):
-        temp = []
-        temp.append(self.set0.s_printCacheDireccion())
-        temp.append(self.set0.s_printCacheDireccion())
-        return temp

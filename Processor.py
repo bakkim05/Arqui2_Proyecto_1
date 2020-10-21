@@ -31,7 +31,7 @@ class Processor:
     def writeValidator(self, direccionMemoria, valor):
         if (self.estadoCacheGet(direccionMemoria) == "I"):
             self.writeCache(direccionMemoria,valor)
-            self.estadoCacheSet(direccionMemoria,"M")
+            # self.estadoCacheSet(direccionMemoria,"M")
             self.Publisher.broadcast(self.identifier, "write miss", direccionMemoria)
         elif(self.estadoCacheGet(direccionMemoria) == "S"):
             self.writeCache(direccionMemoria,valor)
@@ -89,13 +89,28 @@ class Processor:
         return self.Cache.estadoSet(direccionMemoria,nuevoEstado)
 
     def printCacheValue(self):
-        return self.Cache.printCacheValor()
+        temp = []
+        temp.append(self.Cache.set0.bloque0.dato)
+        temp.append(self.Cache.set0.bloque1.dato)
+        temp.append(self.Cache.set1.bloque0.dato)
+        temp.append(self.Cache.set1.bloque1.dato)
+        return temp
 
     def printCacheEstado(self):
-        return self.Cache.printCacheEstado()
+        temp = []
+        temp.append(self.Cache.set0.bloque0.estado)
+        temp.append(self.Cache.set0.bloque1.estado)
+        temp.append(self.Cache.set1.bloque0.estado)
+        temp.append(self.Cache.set1.bloque1.estado)
+        return temp
 
-    def printCacheDireccion(self):  
-        return self.Cache.printCacheDireccion()
+    def printCacheDireccion(self):
+        temp = [] 
+        temp.append(self.Cache.set0.bloque0.direccion)
+        temp.append(self.Cache.set0.bloque1.direccion)
+        temp.append(self.Cache.set1.bloque0.direccion)
+        temp.append(self.Cache.set1.bloque1.direccion)
+        return temp
     
     #Descanso
     def sleep(self):
