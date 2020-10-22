@@ -26,8 +26,8 @@ class Processor:
     def writeCache(self, direccionMemoria, valor):
         if (self.estadoCacheGet(direccionMemoria) == "I"):
             self.Cache.write(direccionMemoria,valor)
-            self.Publisher.broadcast(self.identifier, "write hit", direccionMemoria)
-            self.lastMessage = "write hit"
+            self.Publisher.broadcast(self.identifier, "read miss", direccionMemoria)
+            self.lastMessage = "read miss"
             self.estadoCacheSet(direccionMemoria,"M")
             return
 
