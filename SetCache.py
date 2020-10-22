@@ -12,7 +12,6 @@ class SetCache:
             if (self.bloque0.b_direccionGet() == direccionMemoria):
                 self.bloque0.b_datoSet(valor)
                 self.bloque0.b_estadoSet("M")
-                self.lastUsed = 1
                 return
 
             else:
@@ -41,7 +40,6 @@ class SetCache:
                     self.bloque0.b_datoSet(valor)
                     self.bloque0.b_estadoSet("M")
                     
-
                 self.lastUsed = 1
                 return
                 
@@ -49,7 +47,6 @@ class SetCache:
             if (self.bloque1.b_direccionGet() == direccionMemoria):
                 self.bloque1.b_datoSet(valor)
                 self.bloque1.b_estadoSet("M")
-                self.lastUsed = 0
                 return
 
             else:
