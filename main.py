@@ -70,7 +70,7 @@ def generatorIteraciones(processor, memory, iteraciones):
     return
 
 def generatorInstruction():
-    numProcesador = random.randint(0,3)
+    numProcesador = random.randint(0,4)
     instruccion = random.binomial(n=2,p=0.5,size=1)[0]
     direccionMemoria = bin(random.randint(0,15)).replace('0b','')
     valor = hex(random.randint(0,65535)).replace('0x','')
@@ -93,9 +93,9 @@ if __name__ == "__main__":
     publisher = []
 
     #Initialize Processor, Subscriber, Publisher, and Memory
-    memory = Memory(2)
+    memory = Memory(0.5)
     for i in range(4):
-        processor.append(Processor(i,memory,1))
+        processor.append(Processor(i,memory,0.1))
         subscriber.append(Subscriber(processor[i]))
         publisher.append(Publisher(i))
 

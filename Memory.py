@@ -2,7 +2,7 @@ import time
 
 class Memory:
     def __init__(self, timer):
-        self.mem = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        self.mem = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
         self.timer = timer
 
     def memGet(self,position):
