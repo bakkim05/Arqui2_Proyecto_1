@@ -15,19 +15,36 @@ class Subscriber:
                 senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria,"S")
                 processor.estadoCacheSet(direccionMemoria,"S")
+                return
+            elif(processor.estadoCacheGet(direccionMemoria) == "O"):
+                senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
+                senderProcessor.estadoCacheSet(direccionMemoria,"S")
+                return
             elif(processor.estadoCacheGet(direccionMemoria) == "S"):
                 senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria,"S")
+                return
             elif(processor.estadoCacheGet(direccionMemoria) == "M"):
                 senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria, "S")
                 processor.estadoCacheSet(direccionMemoria,"O")
-        elif (message == "write miss"):
-            if(processor.estadoCacheGet(direccionMemoria) != "I"):
+                return
+
+        if (message == "write miss"):
+            if(processor.estadoCacheGet(direccionMemoria) == "I"):
                 processor.estadoCacheSet(direccionMemoria,"I")
+                return
+                
         elif (message == "write hit"):
-            if(processor.estadoCacheGet(direccionMemoria) != "I"):
+            if(processor.estadoCacheGet(direccionMemoria) == "O"):
+                processor.estadoCacheSet(direccionMemoria,"S")
+                return
+            elif(processor.estadoCacheGet(direccionMemoria) == "S"):
+                processor.estadoCacheSet(direccionMemoria,"S")
+                return
+            else:
                 processor.estadoCacheSet(direccionMemoria,"I")
+                return
         return
 
 

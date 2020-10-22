@@ -75,30 +75,6 @@ class Processor:
     
     def estadoCacheSet(self,direccionMemoria,nuevoEstado):
         return self.Cache.estadoSet(direccionMemoria,nuevoEstado)
-
-    def printCacheValue(self):
-        temp = []
-        temp.append(self.Cache.set0.bloque0.dato)
-        temp.append(self.Cache.set0.bloque1.dato)
-        temp.append(self.Cache.set1.bloque0.dato)
-        temp.append(self.Cache.set1.bloque1.dato)
-        return temp
-
-    def printCacheEstado(self):
-        temp = []
-        temp.append(self.Cache.set0.bloque0.estado)
-        temp.append(self.Cache.set0.bloque1.estado)
-        temp.append(self.Cache.set1.bloque0.estado)
-        temp.append(self.Cache.set1.bloque1.estado)
-        return temp
-
-    def printCacheDireccion(self):
-        temp = [] 
-        temp.append(self.Cache.set0.bloque0.direccion)
-        temp.append(self.Cache.set0.bloque1.direccion)
-        temp.append(self.Cache.set1.bloque0.direccion)
-        temp.append(self.Cache.set1.bloque1.direccion)
-        return temp
     
     #Descanso
     def sleep(self):

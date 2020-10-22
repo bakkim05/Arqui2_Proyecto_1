@@ -12,6 +12,8 @@ class SetCache:
             if (self.bloque0.b_direccionGet() == direccionMemoria):
                 self.bloque0.b_datoSet(valor)
                 self.bloque0.b_estadoSet("M")
+                self.lastUsed = 1
+                return
 
             else:
                 if (self.bloque0.b_estadoGet() == "M"):
@@ -19,27 +21,36 @@ class SetCache:
                     self.bloque0.b_direccionSet(direccionMemoria)
                     self.bloque0.b_datoSet(valor)
                     
+                    
                 elif (self.bloque0.b_estadoGet() == "O"):
                     self.memory.memSet(int(self.bloque0.b_direccionGet(),2),self.bloque0.b_datoGet())
                     self.bloque0.b_direccionSet(direccionMemoria)
                     self.bloque0.b_datoSet(valor)
                     self.bloque0.b_estadoSet("M")
+                    
                 
                 elif (self.bloque0.b_estadoGet() == "E"):
                     self.memory.memSet(int(self.bloque0.b_direccionGet(),2),self.bloque0.b_datoGet())
                     self.bloque0.b_direccionSet(direccionMemoria)
                     self.bloque0.b_datoSet(valor)
                     self.bloque0.b_estadoSet("M")
+                    
                 
                 else:
                     self.bloque0.b_direccionSet(direccionMemoria)
                     self.bloque0.b_datoSet(valor)
                     self.bloque0.b_estadoSet("M")
+                    
+
+                self.lastUsed = 1
+                return
                 
         else:
             if (self.bloque1.b_direccionGet() == direccionMemoria):
                 self.bloque1.b_datoSet(valor)
                 self.bloque1.b_estadoSet("M")
+                self.lastUsed = 0
+                return
 
             else:
                 if (self.bloque1.b_estadoGet() == "M"):
@@ -47,22 +58,29 @@ class SetCache:
                     self.bloque1.b_direccionSet(direccionMemoria)
                     self.bloque1.b_datoSet(valor)
                     
+                    
                 elif (self.bloque1.b_estadoGet() == "O"):
                     self.memory.memSet(int(self.bloque1.b_direccionGet(),2),self.bloque1.b_datoGet())
                     self.bloque1.b_direccionSet(direccionMemoria)
                     self.bloque1.b_datoSet(valor)
                     self.bloque1.b_estadoSet("M")
+
                 
                 elif (self.bloque1.b_estadoGet() == "E"):
                     self.memory.memSet(int(self.bloque1.b_direccionGet(),2),self.bloque1.b_datoGet())
                     self.bloque1.b_direccionSet(direccionMemoria)
                     self.bloque1.b_datoSet(valor)
                     self.bloque1.b_estadoSet("M")
+
                 
                 else:
                     self.bloque1.b_direccionSet(direccionMemoria)
                     self.bloque1.b_datoSet(valor)
                     self.bloque1.b_estadoSet("M")
+
+
+                self.lastUsed = 0
+                return
 
     
     def s_read(self, direccionMemoria):
