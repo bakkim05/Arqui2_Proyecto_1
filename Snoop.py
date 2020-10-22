@@ -11,38 +11,57 @@ class Subscriber:
 
     def moesi(self, senderProcessor, processor, memory, message, direccionMemoria):
         if (message == "read miss"):
+            #I (ReadMiss, Shared) S
             if(processor.estadoCacheGet(direccionMemoria) == "E"):
                 senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria,"S")
                 processor.estadoCacheSet(direccionMemoria,"S")
                 return
-            elif(processor.estadoCacheGet(direccionMemoria) == "O"):
-                senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
-                senderProcessor.estadoCacheSet(direccionMemoria,"S")
-                return
-            elif(processor.estadoCacheGet(direccionMemoria) == "S"):
-                senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
-                senderProcessor.estadoCacheSet(direccionMemoria,"S")
-                return
-            elif(processor.estadoCacheGet(direccionMemoria) == "M"):
-                senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
-                senderProcessor.estadoCacheSet(direccionMemoria, "S")
+            
+            # elif(processor.estadoCacheGet(direccionMemoria) == "O"):
+            #     senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
+            #     senderProcessor.estadoCacheSet(direccionMemoria,"S")
+            #     return
+
+            # elif(processor.estadoCacheGet(direccionMemoria) == "S"):
+            #     senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
+            #     senderProcessor.estadoCacheSet(direccionMemoria,"S")
+            #     return
+
+            # elif(processor.estadoCacheGet(direccionMemoria) == "M"):
+            #     senderProcessor.writeCache(direccionMemoria, processor.readCache(direccionMemoria))
+            #     senderProcessor.estadoCacheSet(direccionMemoria, "S")
+            #     processor.estadoCacheSet(direccionMemoria,"O")
+            #     return
+        
+        elif (message == "read hit"):
+            if(processor.estadoCacheGet(direccionMemoria) == "M"):
                 processor.estadoCacheSet(direccionMemoria,"O")
                 return
+            elif (processor.estadoCacheGet(direccionMemoria) == "O"):
+                return
 
-        if (message == "write miss"):
-            if(processor.estadoCacheGet(direccionMemoria) == "I"):
+            elif (processor.estadoCacheGet(direccionMemoria) == "E"):
+                processor.estadoCacheSet(direccionMemoria,"S")
+                return
+            
+            elif (processor.estadoCacheGet(direccionMemoria) == "S"):
+                return
+            
+            elif (processor.estadoCacheGet(direccionMemoria) == "M"):
+                return
+
+        elif (message == "write hit"):
+            if(processor.estadoCacheGet(direccionMemoria) == "M"):
                 processor.estadoCacheSet(direccionMemoria,"I")
                 return
-                
-        elif (message == "write hit"):
-            if(processor.estadoCacheGet(direccionMemoria) == "O"):
-                processor.estadoCacheSet(direccionMemoria,"S")
+            elif(processor.estadoCacheGet(direccionMemoria) == "O"):
+                processor.estadoCacheSet(direccionMemoria,"I")
+                return
+            elif(processor.estadoCacheGet(direccionMemoria) == "E"):
+                processor.estadoCacheSet(direccionMemoria,"I")
                 return
             elif(processor.estadoCacheGet(direccionMemoria) == "S"):
-                processor.estadoCacheSet(direccionMemoria,"S")
-                return
-            else:
                 processor.estadoCacheSet(direccionMemoria,"I")
                 return
         return

@@ -8,6 +8,8 @@ class Processor:
         self.memory = memory
         self.Cache = Cache(self.memory)
         self.Publisher = None
+        self.lastInstruction = ""
+        self.lastMessage = ""
 
     def instruction(self, inst, direccionMemoria, valor):
         if (inst == 1):
@@ -24,50 +26,76 @@ class Processor:
     def writeCache(self, direccionMemoria, valor):
         if (self.estadoCacheGet(direccionMemoria) == "I"):
             self.Cache.write(direccionMemoria,valor)
-            self.Publisher.broadcast(self.identifier, "write miss", direccionMemoria)
+            self.Publisher.broadcast(self.identifier, "write hit", direccionMemoria)
+            self.lastMessage = "write hit"
+            self.estadoCacheSet(direccionMemoria,"M")
             return
 
         elif(self.estadoCacheGet(direccionMemoria) == "S"):
             self.Cache.write(direccionMemoria,valor)
             self.Publisher.broadcast(self.identifier, "write hit", direccionMemoria)
+            self.lastMessage = "write hit"
+            self.estadoCacheSet(direccionMemoria,"M")
             return
 
         elif(self.estadoCacheGet(direccionMemoria) == "E"):
             self.Cache.write(direccionMemoria,valor)
             self.Publisher.broadcast(self.identifier, "write hit", direccionMemoria)
+            self.lastMessage = "write hit"
+            self.estadoCacheSet(direccionMemoria,"M")
             return
 
         elif(self.estadoCacheGet(direccionMemoria) == "O"):
             self.Cache.write(direccionMemoria,valor)
             self.Publisher.broadcast(self.identifier, "write hit", direccionMemoria)
+            self.lastMessage = "write hit"
+            self.estadoCacheSet(direccionMemoria,"M")
             return
 
         elif(self.estadoCacheGet(direccionMemoria) == "M"):
             self.Cache.write(direccionMemoria,valor)
+            self.Publisher.broadcast(self.identifier, "write hit", direccionMemoria)
+            self.lastMessage = "write hit"
             return
             
         return
 
     #REVISAR
     def readCache(self, direccionMemoria):
+        #I (Read Miss, Exclusive) E
         if (self.estadoCacheGet(direccionMemoria) == "I"):
             self.Publisher.broadcast(self.identifier, "read miss", direccionMemoria)
+            self.lastMessage = "read miss"
             if (self.estadoCacheGet(direccionMemoria) == "I"):
                 self.writeCache(direccionMemoria, self.memory.memGet(int(direccionMemoria,2)))
                 self.estadoCacheSet(direccionMemoria,"E")
                 return
             return
+
+        #S (Read Hit) S
         elif (self.estadoCacheGet(direccionMemoria) == "S"):
+            self.Publisher.broadcast(self.identifier, "read hit", direccionMemoria)
+            self.lastMessage = "read hit"
             return self.Cache.read(direccionMemoria)
-        elif (self.estadoCacheGet(direccionMemoria) == "E"):
-            return self.Cache.read(direccionMemoria)
+
+        #O (Read Hit) O
         elif (self.estadoCacheGet(direccionMemoria) == "O"):
+            self.Publisher.broadcast(self.identifier, "read hit", direccionMemoria)
+            self.lastMessage = "read hit"
             return self.Cache.read(direccionMemoria)
+
+        #M (Read Hit) M
         elif (self.estadoCacheGet(direccionMemoria) == "M"):
+            self.Publisher.broadcast(self.identifier, "read hit", direccionMemoria)
+            self.lastMessage = "read hit"
             return self.Cache.read(direccionMemoria)
+
         else:
-            self.estadoCacheSet(direccionMemoria,"E")
-            self.writeCache(direccionMemoria,self.memory.memGet(int(direccionMemoria,2)))
+            return self.Cache.read(direccionMemoria)
+            
+        # else:
+        #     self.estadoCacheSet(direccionMemoria,"E")
+        #     self.writeCache(direccionMemoria,self.memory.memGet(int(direccionMemoria,2)))
         return
         
     def estadoCacheGet(self,direccionMemoria):
@@ -76,6 +104,9 @@ class Processor:
     def estadoCacheSet(self,direccionMemoria,nuevoEstado):
         return self.Cache.estadoSet(direccionMemoria,nuevoEstado)
     
+    def updateLastInstruction(self):
+        return
+
     #Descanso
     def sleep(self):
         time.sleep(self.timer)

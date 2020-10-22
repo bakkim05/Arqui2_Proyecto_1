@@ -14,6 +14,8 @@ class GUI:
         self.processorSpeed = 0.1
         self.memorySpeed = 0.2
 
+        self.loop = True
+
         self.processor = []
         self.subscriber = []
         self.publisher = []
@@ -39,8 +41,8 @@ class GUI:
 
         #opcion ejecucion continua
         self.ecLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Continua", width=self.width, height=self.height)
-        self.ecStart = Button(master, text="Start", width=self.width , height=self.height)
-        self.ecStop = Button(master, text="Stop", width=self.width, height=self.height)
+        self.ecStart = Button(master, text="Start", width=self.width , height=self.height, command= lambda: self.generatorContinous())
+        self.ecStop = Button(master, text="Stop", width=self.width, height=self.height, command = lambda: self.killLoop())
 
         self.ecLabel.grid(row=0, column=0)
         self.ecStart.grid(row=0, column=1)
@@ -51,8 +53,7 @@ class GUI:
         #opcion ejecucion loop
         self.elLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Loop", width=self.width, height=self.height)
         self.elLoop = Entry(master, width=self.width)
-        self.elStart = Button(master, text="Start", width=self.width , height=self.height)
-
+        self.elStart = Button(master, text="Start", width=self.width , height=self.height, command= lambda: self.generatorIteraciones())
         self.elLabel.grid(row=1, column=0)
         self.elLoop.grid(row=1, column=1)
         self.elStart.grid(row=1, column=2)
@@ -61,7 +62,7 @@ class GUI:
 
         #opcion ejecucion unitaria
         self.esLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Unitario", width=self.width, height=self.height)
-        self.esStart = Button(master, text="Start", width=self.width , height=self.height)
+        self.esStart = Button(master, text="Start", width=self.width , height=self.height, command = lambda: self.generatorSingle())
 
         self.esLabel.grid(row=2, column=0)
         self.esStart.grid(row=2, column=1)
@@ -99,12 +100,14 @@ class GUI:
         self.p0c1 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p0c2 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p0c3 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
+        self.p0i = Label(master,borderwidth = 2,relief="raised", text="", width=self.width, height=self.height)
 
         self.p0Label.grid(row=5, column=0)
         self.p0c0.grid(row=6,column=0)
         self.p0c1.grid(row=7,column=0)
         self.p0c2.grid(row=8,column=0)
         self.p0c3.grid(row=9,column=0)
+        self.p0i.grid(row=10,column=0)
 
 
         #Processor 1
@@ -113,12 +116,14 @@ class GUI:
         self.p1c1 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p1c2 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p1c3 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
+        self.p1i = Label(master,borderwidth = 2,relief="raised", text="", width=self.width, height=self.height)
 
         self.p1Label.grid(row=5, column=1)
         self.p1c0.grid(row=6,column=1)
         self.p1c1.grid(row=7,column=1)
         self.p1c2.grid(row=8,column=1)
         self.p1c3.grid(row=9,column=1)
+        self.p1i.grid(row=10,column=1)
 
 
 
@@ -128,12 +133,14 @@ class GUI:
         self.p2c1 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p2c2 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p2c3 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
+        self.p2i = Label(master,borderwidth = 2,relief="raised", text="", width=self.width, height=self.height)
 
         self.p2Label.grid(row=5, column=2)
         self.p2c0.grid(row=6,column=2)
         self.p2c1.grid(row=7,column=2)
         self.p2c2.grid(row=8,column=2)
         self.p2c3.grid(row=9,column=2)
+        self.p2i.grid(row=10,column=2)
 
 
 
@@ -143,16 +150,14 @@ class GUI:
         self.p3c1 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p3c2 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
         self.p3c3 = Label(master,borderwidth = 2,relief="ridge", text="", width=self.width, height=self.height)
+        self.p3i = Label(master,borderwidth = 2,relief="raised", text="", width=self.width, height=self.height)
 
         self.p3Label.grid(row=5, column=3)
         self.p3c0.grid(row=6,column=3)
         self.p3c1.grid(row=7,column=3)
         self.p3c2.grid(row=8,column=3)
         self.p3c3.grid(row=9,column=3)
-
-        #Blank
-        self.blankLabel2 = Label(master,text="",width=self.width, height=self.height)
-        self.blankLabel2.grid(row=10,column=0)
+        self.p3i.grid(row=10,column=3)
 
         #Instruction Matrix
         self.p0iLabel = Label(master, borderwidth = 2,relief="ridge",text="Procesador 0", width=self.width, height=self.height)
@@ -160,10 +165,10 @@ class GUI:
         self.p2iLabel = Label(master, borderwidth = 2,relief="ridge",text="Procesador 2", width=self.width, height=self.height)
         self.p3iLabel = Label(master, borderwidth = 2,relief="ridge",text="Procesador 3", width=self.width, height=self.height)
 
-        self.p0iLabel.grid(row=12,column=0)
-        self.p1iLabel.grid(row=13,column=0)
-        self.p2iLabel.grid(row=14,column=0)
-        self.p3iLabel.grid(row=15,column=0)
+        self.p0iLabel.grid(row=13,column=0)
+        self.p1iLabel.grid(row=14,column=0)
+        self.p2iLabel.grid(row=15,column=0)
+        self.p3iLabel.grid(row=16,column=0)
 
         self.iLabel = Label(master, borderwidth = 2,relief="ridge",text="Instruccion Ejecutada", width=3*self.width, height=self.height)
         self.p0inst = Label(master, borderwidth = 2,relief="ridge",text="", width=3*self.width, height=self.height)
@@ -171,11 +176,11 @@ class GUI:
         self.p2inst = Label(master, borderwidth = 2,relief="ridge",text="", width=3*self.width, height=self.height)
         self.p3inst = Label(master, borderwidth = 2,relief="ridge",text="", width=3*self.width, height=self.height)
 
-        self.iLabel.grid(row=11,column=1, columnspan = 3)
-        self.p0inst.grid(row=12,column=1, columnspan = 3)
-        self.p1inst.grid(row=13,column=1, columnspan = 3)
-        self.p2inst.grid(row=14,column=1, columnspan = 3)
-        self.p3inst.grid(row=15,column=1, columnspan = 3)
+        self.iLabel.grid(row=12,column=1, columnspan = 3)
+        self.p0inst.grid(row=13,column=1, columnspan = 3)
+        self.p1inst.grid(row=14,column=1, columnspan = 3)
+        self.p2inst.grid(row=15,column=1, columnspan = 3)
+        self.p3inst.grid(row=16,column=1, columnspan = 3)
 
 
         #Memory
@@ -281,39 +286,35 @@ class GUI:
             processor[i].Publisher = publisher[i]
         return
 
-    def generatorSingle(self, processor):
+    def generatorSingle(self):
         [numProcesador, instruccion, direccionMemoria, valor] = self.generatorInstruction()
-        p = processor[numProcesador]
-        
-        if (instruccion == 1):
-            print("P"+str(numProcesador)+": CALC")
-        elif (instruccion == 0):
-            print("P"+str(numProcesador)+": READ " + direccionMemoria)
-        else:
-            print("P"+str(numProcesador)+": WRITE " + direccionMemoria+';'+valor)
+        p = self.processor[numProcesador]
 
         p.instruction(instruccion, direccionMemoria, valor)
-        self.printMemoryAndCache(processor,memory)
+        self.printMemoryAndCache(self.processor,self.memory)
         return
 
     def generatorContinous(self):
-        while(True):
-            return
+        self.loop = True
+        while(self.loop):
+            [numProcesador, instruccion, direccionMemoria, valor] = self.generatorInstruction()
+            p = self.processor[numProcesador]
+
+            p.instruction(instruccion, direccionMemoria, valor)
+            self.printMemoryAndCache(self.processor,self.memory)
         return
 
-    def generatorIteraciones(self, processor, memory, iteraciones):
-        for i in range(iteraciones):
+    def killLoop(self):
+        self.loop=False
+        return
+
+    def generatorIteraciones(self):
+        for i in range(int(self.elLoop.get())):
             [numProcesador, instruccion, direccionMemoria, valor] = self.generatorInstruction()
-            p = processor[numProcesador]
-            
-            if (instruccion == 1):
-                print("P"+str(numProcesador)+": CALC")
-            elif (instruccion == 0):
-                print("P"+str(numProcesador)+": READ " + direccionMemoria)
-            else:
-                print("P"+str(numProcesador)+": WRITE " + direccionMemoria+';'+valor)
+            p = self.processor[numProcesador]
+
             p.instruction(instruccion, direccionMemoria, valor)
-            self.printMemoryAndCache(processor,memory)
+            self.printMemoryAndCache(self.processor,self.memory)
         return
 
     def generatorInstruction(self):
@@ -329,21 +330,25 @@ class GUI:
         self.p0c1["text"] = self.cacheTextBuilder(self.processor[0].Cache.set0.bloque1)
         self.p0c2["text"] = self.cacheTextBuilder(self.processor[0].Cache.set1.bloque0)
         self.p0c3["text"] = self.cacheTextBuilder(self.processor[0].Cache.set1.bloque1)
+        self.p0i["text"] = self.processor[0].lastMessage
 
         self.p1c0["text"] = self.cacheTextBuilder(self.processor[1].Cache.set0.bloque0)
         self.p1c1["text"] = self.cacheTextBuilder(self.processor[1].Cache.set0.bloque1)
         self.p1c2["text"] = self.cacheTextBuilder(self.processor[1].Cache.set1.bloque0)
         self.p1c3["text"] = self.cacheTextBuilder(self.processor[1].Cache.set1.bloque1)
+        self.p1i["text"] = self.processor[1].lastMessage
 
         self.p2c0["text"] = self.cacheTextBuilder(self.processor[2].Cache.set0.bloque0)
         self.p2c1["text"] = self.cacheTextBuilder(self.processor[2].Cache.set0.bloque1)
         self.p2c2["text"] = self.cacheTextBuilder(self.processor[2].Cache.set1.bloque0)
         self.p2c3["text"] = self.cacheTextBuilder(self.processor[2].Cache.set1.bloque1)
+        self.p2i["text"] = self.processor[2].lastMessage
 
         self.p3c0["text"] = self.cacheTextBuilder(self.processor[3].Cache.set0.bloque0)
         self.p3c1["text"] = self.cacheTextBuilder(self.processor[3].Cache.set0.bloque1)
         self.p3c2["text"] = self.cacheTextBuilder(self.processor[3].Cache.set1.bloque0)
         self.p3c3["text"] = self.cacheTextBuilder(self.processor[3].Cache.set1.bloque1)
+        self.p3i["text"] = self.processor[3].lastMessage
 
         self.m0["text"] = self.memory.memGet(0)
         self.m1["text"] = self.memory.memGet(1)
@@ -362,6 +367,12 @@ class GUI:
         self.m14["text"] = self.memory.memGet(14)
         self.m15["text"] = self.memory.memGet(15)
 
+        self.p0inst["text"] = self.processor[0].lastInstruction
+        self.p1inst["text"] = self.processor[1].lastInstruction
+        self.p2inst["text"] = self.processor[2].lastInstruction
+        self.p3inst["text"] = self.processor[3].lastInstruction
+
+
         return
 
     def cacheTextBuilder(self,bloqueCache):
@@ -371,7 +382,6 @@ class GUI:
         escribir = estado + " - " + direccion + " - " + dato
         return escribir
 
-
     def buildInstruction(self):
         processorNumber = self.processorSelector(self.processorVar.get())
         instructionNumber = self.instructionSelector(self.instructionVar.get())
@@ -380,6 +390,13 @@ class GUI:
 
         self.processor[processorNumber].instruction(instructionNumber,direccionMemoria,valor)
         self.printMemoryAndCache(self.processor,self.memory)
+
+        if (self.instructionVar.get() == "READ"):
+            self.processor[processorNumber].lastInstruction = self.processorVar.get() + " " + self.instructionVar.get() + " " + direccionMemoria
+        elif (self.instructionVar.get() == "WRITE"):
+            self.processor[processorNumber].lastInstruction = self.processorVar.get() + " " + self.instructionVar.get() + " " + direccionMemoria + " " + valor
+        else:
+            self.processor[processorNumber].lastInstruction = self.processorVar.get() + " " + self.instructionVar.get()
         return
 
     def processorSelector(self, processorText):
