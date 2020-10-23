@@ -3,7 +3,7 @@ from Processor import Processor
 from Memory import Memory
 from Snoop import Subscriber, Publisher
 from numpy import random
-import threading
+from threading import Thread
 import time
 
 class GUI:
@@ -36,12 +36,14 @@ class GUI:
         self.publisherToProcessor(self.processor,self.publisher)
 
 
+
+
         self.width = 18
         self.height = 1
 
         #opcion ejecucion continua
         self.ecLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Continua", width=self.width, height=self.height)
-        self.ecStart = Button(master, text="Start", width=self.width , height=self.height, command= lambda: self.generatorContinous())
+        self.ecStart = Button(master, text="Start", width=self.width , height=self.height, command= lambda: self.instructionFunction(3))
         self.ecStop = Button(master, text="Stop", width=self.width, height=self.height, command = lambda: self.killLoop())
 
         self.ecLabel.grid(row=0, column=0)
@@ -53,7 +55,7 @@ class GUI:
         #opcion ejecucion loop
         self.elLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Loop", width=self.width, height=self.height)
         self.elLoop = Entry(master, width=self.width)
-        self.elStart = Button(master, text="Start", width=self.width , height=self.height, command= lambda: self.generatorIteraciones())
+        self.elStart = Button(master, text="Start", width=self.width , height=self.height, command= lambda: self.instructionFunction(2))
         self.elLabel.grid(row=1, column=0)
         self.elLoop.grid(row=1, column=1)
         self.elStart.grid(row=1, column=2)
@@ -62,14 +64,14 @@ class GUI:
 
         #opcion ejecucion unitaria
         self.esLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Unitario", width=self.width, height=self.height)
-        self.esStart = Button(master, text="Start", width=self.width , height=self.height, command = lambda: self.generatorSingle())
+        self.esStart = Button(master, text="Start", width=self.width , height=self.height, command = lambda: self.instructionFunction(1))
 
         self.esLabel.grid(row=2, column=0)
         self.esStart.grid(row=2, column=1)
 
 
 
-        #opcion ingresatr instruccion
+        #opcion ingresar instruccion
         self.iiLabel = Label(master,borderwidth = 2,relief="ridge", text="Ingresar Instruccion", width=self.width, height=self.height)
         self.processorOption = ["Processor 0", "Processor 1", "Processor 2", "Processor 3"]
         self.processorVar = StringVar(master)
@@ -255,8 +257,6 @@ class GUI:
 
         self.printMemoryAndCache(self.processorSelector,self.memory)
         
-
-
     def subscribeToPublisher(self, publisher, subscribers):
         publisher[0].register(subscribers[1])
         publisher[0].register(subscribers[2])
@@ -286,45 +286,90 @@ class GUI:
             processor[i].Publisher = publisher[i]
         return
 
-    def generatorSingle(self):
-        [numProcesador, instruccion, direccionMemoria, valor] = self.generatorInstruction()
-        p = self.processor[numProcesador]
 
-        p.instruction(instruccion, direccionMemoria, valor)
+
+#--------------------------------------EXECUTION LOOPS# ---------------------------------
+
+    def generatorSingle(self, instruccion, direccionMemoria,valor):
+        p0 = Thread(target=self.mtInstruction, args=(self.processor[0],))
+        p1 = Thread(target=self.mtInstruction, args=(self.processor[1],))
+        p2 = Thread(target=self.mtInstruction, args=(self.processor[2],))
+        p3 = Thread(target=self.mtInstruction, args=(self.processor[3],))
+
+        p0.start()
+        p1.start()
+        p2.start()
+        p3.start()
+
         self.printMemoryAndCache(self.processor,self.memory)
+
         return
 
-    def generatorContinous(self):
+    def generatorIteraciones(self, instruccion, direccionMemoria, valor):
+        for i in range(int(self.elLoop.get())):
+
+            p0 = Thread(target=self.mtInstruction, args=(self.processor[0],))
+            p1 = Thread(target=self.mtInstruction, args=(self.processor[1],))
+            p2 = Thread(target=self.mtInstruction, args=(self.processor[2],))
+            p3 = Thread(target=self.mtInstruction, args=(self.processor[3],))
+
+            p0.start()
+            p1.start()
+            p2.start()
+            p3.start()
+
+            self.printMemoryAndCache(self.processor,self.memory)
+
+        return
+
+    def generatorContinous(self, instruccion, direccionMemoria,valor):
         self.loop = True
         while(self.loop):
-            [numProcesador, instruccion, direccionMemoria, valor] = self.generatorInstruction()
-            p = self.processor[numProcesador]
 
-            p.instruction(instruccion, direccionMemoria, valor)
+            p0 = Thread(target=self.mtInstruction, args=(self.processor[0],))
+            p1 = Thread(target=self.mtInstruction, args=(self.processor[1],))
+            p2 = Thread(target=self.mtInstruction, args=(self.processor[2],))
+            p3 = Thread(target=self.mtInstruction, args=(self.processor[3],))
+
+            p0.start()
+            p1.start()
+            p2.start()
+            p3.start()
+
             self.printMemoryAndCache(self.processor,self.memory)
+
         return
 
     def killLoop(self):
         self.loop=False
         return
+# --------------------------------------------------------------------------------------------
 
-    def generatorIteraciones(self):
-        for i in range(int(self.elLoop.get())):
-            [numProcesador, instruccion, direccionMemoria, valor] = self.generatorInstruction()
-            p = self.processor[numProcesador]
+    def mtInstruction(self, processor):
+        [instruccion, direccionMemoria, valor] = self.generatorInstruction()
+        processor.instruction(instruccion, direccionMemoria, valor)
 
-            p.instruction(instruccion, direccionMemoria, valor)
-            self.printMemoryAndCache(self.processor,self.memory)
-        return
+    def instructionFunction(self, mode):
+        [instruccion, direccionMemoria, valor] = self.generatorInstruction()
+
+        if (mode == 1):
+            self.generatorSingle(instruccion, direccionMemoria,valor)
+        elif (mode == 2):
+            self.generatorIteraciones(instruccion, direccionMemoria, valor)
+        else:
+            self.generatorContinous(instruccion, direccionMemoria,valor)
+        
 
     def generatorInstruction(self):
-        numProcesador = random.randint(0,4)
         instruccion = random.binomial(n=2,p=0.5,size=1)[0]
         direccionMemoria = bin(random.randint(0,15)).replace('0b','')
         valor = hex(random.randint(0,65535)).replace('0x','')
         
-        return [numProcesador,instruccion,direccionMemoria,valor]
+        return [instruccion,direccionMemoria,valor]
 
+
+
+#-----------------------------------DISPLAY PRINTS--------------------------------------------
     def printMemoryAndCache(self,processor,memory):
         self.p0c0["text"] = self.cacheTextBuilder(self.processor[0].Cache.set0.bloque0)
         self.p0c1["text"] = self.cacheTextBuilder(self.processor[0].Cache.set0.bloque1)
@@ -381,7 +426,9 @@ class GUI:
         dato = bloqueCache.b_datoGet()
         escribir = estado + " - " + direccion + " - " + dato
         return escribir
+# --------------------------------------------------------------------------------------------
 
+# -----------------------------------SPECIFIC INSTRUCTION BUILDER-----------------------------
     def buildInstruction(self):
         processorNumber = self.processorSelector(self.processorVar.get())
         instructionNumber = self.instructionSelector(self.instructionVar.get())
@@ -392,11 +439,11 @@ class GUI:
         self.printMemoryAndCache(self.processor,self.memory)
 
         if (self.instructionVar.get() == "READ"):
-            self.processor[processorNumber].lastInstruction = self.processorVar.get() + " " + self.instructionVar.get() + " " + direccionMemoria
+            self.processor[processorNumber].lastInstruction = self.instructionVar.get() + " " + direccionMemoria
         elif (self.instructionVar.get() == "WRITE"):
-            self.processor[processorNumber].lastInstruction = self.processorVar.get() + " " + self.instructionVar.get() + " " + direccionMemoria + " " + valor
+            self.processor[processorNumber].lastInstruction = self.instructionVar.get() + " " + direccionMemoria + " " + valor
         else:
-            self.processor[processorNumber].lastInstruction = self.processorVar.get() + " " + self.instructionVar.get()
+            self.processor[processorNumber].lastInstruction = self.instructionVar.get()
         return
 
     def processorSelector(self, processorText):
@@ -416,3 +463,4 @@ class GUI:
             return 1
         else:
             return 2
+# --------------------------------------------------------------------------------------------

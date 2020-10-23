@@ -11,12 +11,11 @@ class Subscriber:
 
     def moesi(self, senderProcessor, processor, memory, message, direccionMemoria):
         if (message == "read miss"):
-            #el problema es que esto le manda multiples respuestas al senderCache dando una respuesta falsa
-            #I (ReadMiss, Shared) S
-            if(processor.estadoCacheGet(direccionMemoria) == "O"):
-                senderProcessor.Cache.writeX(direccionMemoria, processor.readCache(direccionMemoria))
-                senderProcessor.estadoCacheSet(direccionMemoria,"S")
-                return
+
+            # if(processor.estadoCacheGet(direccionMemoria) == "I"):
+            #     senderProcessor.Cache.writeX(direccionMemoria, processor.readCache(direccionMemoria))
+            #     senderProcessor.estadoCacheSet(direccionMemoria,"O")
+            #     return
             if(processor.estadoCacheGet(direccionMemoria) == "E"):
                 senderProcessor.Cache.writeX(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria,"S")
@@ -33,6 +32,7 @@ class Subscriber:
             if(processor.estadoCacheGet(direccionMemoria) == "M"):
                 processor.estadoCacheSet(direccionMemoria,"O")
                 return
+                
             elif (processor.estadoCacheGet(direccionMemoria) == "O"):
                 return
 
@@ -73,6 +73,12 @@ class Subscriber:
             elif(processor.estadoCacheGet(direccionMemoria) == "S"):
                 processor.estadoCacheSet(direccionMemoria,"I")
                 return
+
+        elif (message == "read hit M"):
+            if(processor.estadoCacheGet(direccionMemoria) == "I"):
+                processor.estadoCacheSet(direccionMemoria,"S")
+                return
+            
         return
 
 

@@ -1,4 +1,5 @@
 import time
+from numpy import array2string
 from Cache import Cache
 
 class Processor:
@@ -12,6 +13,8 @@ class Processor:
         self.lastMessage = ""
 
     def instruction(self, inst, direccionMemoria, valor):
+        self.instructionTextBuilder(inst,direccionMemoria,valor)
+
         if (inst == 1):
             pass
             #instruccion CALC
@@ -22,6 +25,26 @@ class Processor:
 
         self.sleep()
         return
+    
+    def instructionTextBuilder(self, inst, direccionMemoria, valor):
+
+        if (inst == "READ"):
+            self.lastInstruction = self.instructionSelector(inst)+" "+direccionMemoria
+            
+        elif (inst == "WRITE"):
+            self.lastInstruction = self.instructionSelector(inst)+" "+direccionMemoria+" "+valor
+            
+        else:
+            self.lastInstruction = self.instructionSelector(inst)
+        return
+
+    def instructionSelector(self, instruccion):
+        if (instruccion == 0):
+            return "READ"
+        elif (instruccion == 1):
+            return "CALC"
+        else:
+            return "WRITE"
 
     def writeCache(self, direccionMemoria, valor):
         if (self.estadoCacheGet(direccionMemoria) == "I"):
@@ -60,7 +83,6 @@ class Processor:
             
         return
 
-    #REVISAR
     def readCache(self, direccionMemoria):
         #I (Read Miss, Exclusive) E
         if (self.estadoCacheGet(direccionMemoria) == "I"):
@@ -84,11 +106,6 @@ class Processor:
             self.lastMessage = "read hit"
             return self.Cache.read(direccionMemoria)
 
-        #M (Read Hit) M
-        elif (self.estadoCacheGet(direccionMemoria) == "M"):
-            self.Publisher.broadcast(self.identifier, "read hit", direccionMemoria)
-            self.lastMessage = "read hit"
-            return self.Cache.read(direccionMemoria)
 
         else:
             return self.Cache.read(direccionMemoria)
@@ -103,11 +120,7 @@ class Processor:
     
     def estadoCacheSet(self,direccionMemoria,nuevoEstado):
         return self.Cache.estadoSet(direccionMemoria,nuevoEstado)
-    
-    def updateLastInstruction(self):
-        return
 
-    #Descanso
     def sleep(self):
         time.sleep(self.timer)
         return
