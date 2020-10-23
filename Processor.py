@@ -28,10 +28,10 @@ class Processor:
     
     def instructionTextBuilder(self, inst, direccionMemoria, valor):
 
-        if (inst == "READ"):
+        if (inst == 0):
             self.lastInstruction = self.instructionSelector(inst)+" "+direccionMemoria
             
-        elif (inst == "WRITE"):
+        elif (inst == 2):
             self.lastInstruction = self.instructionSelector(inst)+" "+direccionMemoria+" "+valor
             
         else:
