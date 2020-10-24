@@ -12,6 +12,10 @@ class Processor:
         self.lastInstruction = ""
         self.lastMessage = ""
 
+    def lastMessageSet(self,nuevoMessage):
+        self.lastMessage = nuevoMessage
+        return
+
     def instruction(self, inst, direccionMemoria, valor):
         self.instructionTextBuilder(inst,direccionMemoria,valor)
 

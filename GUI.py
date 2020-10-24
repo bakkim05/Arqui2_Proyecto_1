@@ -63,7 +63,7 @@ class GUI:
 
 
         #opcion ejecucion unitaria
-        self.esLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Unitario", width=self.width, height=self.height)
+        self.esLabel = Label(master, borderwidth = 2,relief="ridge",text="Ejecucion Unitaria", width=self.width, height=self.height)
         self.esStart = Button(master, text="Start", width=self.width , height=self.height, command = lambda: self.instructionFunction(1))
 
         self.esLabel.grid(row=2, column=0)
@@ -291,6 +291,8 @@ class GUI:
 #--------------------------------------EXECUTION LOOPS# ---------------------------------
 
     def generatorSingle(self, instruccion, direccionMemoria,valor):
+        self.printMemoryAndCache(self.processor,self.memory)
+
         p0 = Thread(target=self.mtInstruction, args=(self.processor[0],))
         p1 = Thread(target=self.mtInstruction, args=(self.processor[1],))
         p2 = Thread(target=self.mtInstruction, args=(self.processor[2],))
@@ -299,15 +301,15 @@ class GUI:
         p0.start()
         p1.start()
         p2.start()
-        p3.start()
-
-        self.printMemoryAndCache(self.processor,self.memory)
+        p3.start()      
 
         return
 
     def generatorIteraciones(self, instruccion, direccionMemoria, valor):
         for i in range(int(self.elLoop.get())):
 
+            self.printMemoryAndCache(self.processor,self.memory)
+
             p0 = Thread(target=self.mtInstruction, args=(self.processor[0],))
             p1 = Thread(target=self.mtInstruction, args=(self.processor[1],))
             p2 = Thread(target=self.mtInstruction, args=(self.processor[2],))
@@ -316,15 +318,15 @@ class GUI:
             p0.start()
             p1.start()
             p2.start()
-            p3.start()
-
-            self.printMemoryAndCache(self.processor,self.memory)
+            p3.start() 
 
         return
 
     def generatorContinous(self, instruccion, direccionMemoria,valor):
         self.loop = True
         while(self.loop):
+            
+            self.printMemoryAndCache(self.processor,self.memory)
 
             p0 = Thread(target=self.mtInstruction, args=(self.processor[0],))
             p1 = Thread(target=self.mtInstruction, args=(self.processor[1],))
@@ -335,8 +337,6 @@ class GUI:
             p1.start()
             p2.start()
             p3.start()
-
-            self.printMemoryAndCache(self.processor,self.memory)
 
         return
 
@@ -359,7 +359,6 @@ class GUI:
         else:
             self.generatorContinous(instruccion, direccionMemoria,valor)
         
-
     def generatorInstruction(self):
         instruccion = random.binomial(n=2,p=0.5,size=1)[0]
         direccionMemoria = bin(random.randint(0,15)).replace('0b','')
