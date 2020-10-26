@@ -11,11 +11,6 @@ class Subscriber:
 
     def moesi(self, senderProcessor, processor, memory, message, direccionMemoria):
         if (message == "read miss"):
-
-            # if(processor.estadoCacheGet(direccionMemoria) == "I"):
-            #     senderProcessor.Cache.writeX(direccionMemoria, processor.readCache(direccionMemoria))
-            #     senderProcessor.estadoCacheSet(direccionMemoria,"O")
-            #     return
             if(processor.estadoCacheGet(direccionMemoria) == "E"):
                 senderProcessor.Cache.writeX(direccionMemoria, processor.readCache(direccionMemoria))
                 senderProcessor.estadoCacheSet(direccionMemoria,"S")
@@ -72,11 +67,6 @@ class Subscriber:
                 return
             elif(processor.estadoCacheGet(direccionMemoria) == "S"):
                 processor.estadoCacheSet(direccionMemoria,"I")
-                return
-
-        elif (message == "read hit M"):
-            if(processor.estadoCacheGet(direccionMemoria) == "I"):
-                processor.estadoCacheSet(direccionMemoria,"S")
                 return
             
         return

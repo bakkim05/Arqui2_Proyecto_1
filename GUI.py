@@ -411,10 +411,10 @@ class GUI:
         self.m14["text"] = self.memory.memGet(14)
         self.m15["text"] = self.memory.memGet(15)
 
-        self.p0inst["text"] = self.processor[0].lastInstruction
-        self.p1inst["text"] = self.processor[1].lastInstruction
-        self.p2inst["text"] = self.processor[2].lastInstruction
-        self.p3inst["text"] = self.processor[3].lastInstruction
+        self.p0inst["text"] = self.processor[0].instructionPrint
+        self.p1inst["text"] = self.processor[1].instructionPrint
+        self.p2inst["text"] = self.processor[2].instructionPrint
+        self.p3inst["text"] = self.processor[3].instructionPrint
 
 
         return

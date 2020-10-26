@@ -10,36 +10,29 @@ class Processor:
         self.Cache = Cache(self.memory)
         self.Publisher = None
         self.lastInstruction = ""
+        self.previousInstruction = ""
+        self.instructionPrint = ""
         self.lastMessage = ""
 
-    def lastMessageSet(self,nuevoMessage):
-        self.lastMessage = nuevoMessage
-        return
-
     def instruction(self, inst, direccionMemoria, valor):
-        self.instructionTextBuilder(inst,direccionMemoria,valor)
-
-        if (inst == 1):
-            pass
-            #instruccion CALC
-        elif (inst == 0):
-            self.readCache(direccionMemoria)
-        else:
-            self.writeCache(direccionMemoria,valor)
-
-        self.sleep()
-        return
-    
-    def instructionTextBuilder(self, inst, direccionMemoria, valor):
+        self.previousInstruction = self.lastInstruction
+        self.lastInstruction = ""
 
         if (inst == 0):
             self.lastInstruction = self.instructionSelector(inst)+" "+direccionMemoria
+            self.readCache(direccionMemoria)
             
         elif (inst == 2):
             self.lastInstruction = self.instructionSelector(inst)+" "+direccionMemoria+" "+valor
+            self.writeCache(direccionMemoria,valor)
             
         else:
             self.lastInstruction = self.instructionSelector(inst)
+            self.lastMessage = ""
+            pass
+
+        self.instructionPrint = self.previousInstruction + " || " + self.lastInstruction
+
         return
 
     def instructionSelector(self, instruccion):
@@ -50,11 +43,12 @@ class Processor:
         else:
             return "WRITE"
 
+#-------Cache Related Operations-----------------
     def writeCache(self, direccionMemoria, valor):
         if (self.estadoCacheGet(direccionMemoria) == "I"):
             self.Cache.write(direccionMemoria,valor)
-            self.Publisher.broadcast(self.identifier, "read miss", direccionMemoria)
-            self.lastMessage = "read miss"
+            self.lastMessage = "write miss"
+            self.Publisher.broadcast(self.identifier, "write miss", direccionMemoria)
             self.estadoCacheSet(direccionMemoria,"M")
             return
 
@@ -94,6 +88,7 @@ class Processor:
             self.lastMessage = "read miss"
             if (self.estadoCacheGet(direccionMemoria) == "I"):
                 self.writeCache(direccionMemoria, self.memory.memGet(int(direccionMemoria,2)))
+                self.lastMessage = "read miss"
                 self.estadoCacheSet(direccionMemoria,"E")
                 return
             return
@@ -113,10 +108,7 @@ class Processor:
 
         else:
             return self.Cache.read(direccionMemoria)
-            
-        # else:
-        #     self.estadoCacheSet(direccionMemoria,"E")
-        #     self.writeCache(direccionMemoria,self.memory.memGet(int(direccionMemoria,2)))
+
         return
         
     def estadoCacheGet(self,direccionMemoria):
@@ -124,6 +116,7 @@ class Processor:
     
     def estadoCacheSet(self,direccionMemoria,nuevoEstado):
         return self.Cache.estadoSet(direccionMemoria,nuevoEstado)
+#-------------------------------------------------
 
     def sleep(self):
         time.sleep(self.timer)
